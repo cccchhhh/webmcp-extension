@@ -78,5 +78,30 @@ defineEmits<{ tools: []; settings: [] }>();
     <summary>{{ t(faq[0]) }}</summary>
     <p>{{ t(faq[1]) }}</p>
   </details>
+  <section class="help-privacy">
+    <h3 class="section-head">{{ t('隐私说明') }}</h3>
+    <a
+      class="privacy-link"
+      href="https://github.com/cccchhhh/webmcp-extension/blob/main/PRIVACY.md"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {{ t('查看隐私说明（在新标签页打开）') }}
+    </a>
+  </section>
   <button class="btn full" @click="$emit('tools')">{{ t('前往 Tools') }}</button>
 </template>
+<style scoped>
+.privacy-link {
+  color: var(--blue);
+  font-size: 12px;
+  line-height: 1.8;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.privacy-link:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+</style>

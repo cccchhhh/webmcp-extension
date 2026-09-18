@@ -66,6 +66,8 @@ export const en: Record<string, string> = {
   开始使用: 'Get started',
   三个步骤: 'Three steps',
   常见问题: 'FAQ',
+  隐私说明: 'Privacy policy',
+  '查看隐私说明（在新标签页打开）': 'View privacy policy (opens in a new tab)',
   '前往 Tools': 'Go to tools',
   '当前浏览器会话中的工具调用。': 'Tool calls in the current browser session.',
   暂无调用记录: 'No calls yet',
