@@ -233,6 +233,11 @@ export const en: Record<string, string> = {
   '只有注册了受支持 WebMCP 工具的页面才会显示工具。Chrome 116 仅为扩展 API 下限；还需要浏览器提供 document.modelContext.getTools / executeTool 实验接口。':
     'Only pages that register supported WebMCP tools show tools. Chrome 116 is the minimum for extension APIs; the experimental document.modelContext.getTools / executeTool APIs are also required.',
   'AIChat 需要桥接服务吗？': 'Does AIChat need a bridge?',
+  '如何启动远程桥接服务？': 'How do I start the remote bridge service?',
+  '本机启动需要 Node.js 24+。包发布到 npm 后，在终端执行 npx -y @webmcp/bridge。首次运行会自动初始化，每次启动成功后都会输出 MCP 地址、Agent 令牌和插件令牌；在 Settings 中填写 http://127.0.0.1:38472 和插件令牌，保存并开启连接。外部 MCP 客户端选择 Streamable HTTP，地址填写 http://127.0.0.1:38472/mcp，并使用独立 Agent 令牌配置 Authorization: Bearer <令牌>。保持终端运行，按 Ctrl+C 停止服务；再次启动会复用并显示已保存的令牌。远程 HTTPS 部署详见仓库文档。':
+    'Running locally requires Node.js 24+. Once the package is published to npm, run npx -y @webmcp/bridge in a terminal. The first run initializes credentials automatically. Every successful startup prints the MCP URL, Agent token, and plugin token. In Settings, enter http://127.0.0.1:38472 and the plugin token, save, and enable the connection. For an external MCP client, select Streamable HTTP, use http://127.0.0.1:38472/mcp, and configure Authorization: Bearer <token> with the separate Agent token. Keep the terminal open; press Ctrl+C to stop the service. Subsequent runs reuse and display the saved tokens. See the repository documentation for remote HTTPS deployment.',
+  '查看 Bridge GitHub 仓库（在新标签页打开）':
+    'View the Bridge GitHub repository (opens in a new tab)',
   '不需要。内置 AIChat 直接连接配置的模型服务；远程桥接供外部 MCP 客户端访问页面工具。':
     'No. Built-in AIChat connects directly to your model service. The remote bridge lets external MCP clients access page tools.',
   'API Key 和对话保存在哪里？': 'Where are API keys and chats stored?',

@@ -56,6 +56,12 @@ defineEmits<{ tools: []; settings: [] }>();
         '不需要。内置 AIChat 直接连接配置的模型服务；远程桥接供外部 MCP 客户端访问页面工具。',
       ],
       [
+        '如何启动远程桥接服务？',
+        '本机启动需要 Node.js 24+。包发布到 npm 后，在终端执行 npx -y @webmcp/bridge。首次运行会自动初始化，每次启动成功后都会输出 MCP 地址、Agent 令牌和插件令牌；在 Settings 中填写 http://127.0.0.1:38472 和插件令牌，保存并开启连接。外部 MCP 客户端选择 Streamable HTTP，地址填写 http://127.0.0.1:38472/mcp，并使用独立 Agent 令牌配置 Authorization: Bearer <令牌>。保持终端运行，按 Ctrl+C 停止服务；再次启动会复用并显示已保存的令牌。远程 HTTPS 部署详见仓库文档。',
+        'https://github.com/cccchhhh/webmcp-server',
+        '查看 Bridge GitHub 仓库（在新标签页打开）',
+      ],
+      [
         'API Key 和对话保存在哪里？',
         'Key 默认仅保存在浏览器会话；主动选择记住后保存在本机，非系统密钥保险箱。聊天和授权工具定义、结果会发送到所选模型服务，服务端保留策略由该服务决定。聊天记录不跨浏览器重启保留。',
       ],
@@ -77,11 +83,20 @@ defineEmits<{ tools: []; settings: [] }>();
   >
     <summary>{{ t(faq[0]) }}</summary>
     <p>{{ t(faq[1]) }}</p>
+    <a
+      v-if="faq[2] && faq[3]"
+      class="help-link"
+      :href="faq[2]"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {{ t(faq[3]) }}
+    </a>
   </details>
   <section class="help-privacy">
     <h3 class="section-head">{{ t('隐私说明') }}</h3>
     <a
-      class="privacy-link"
+      class="help-link"
       href="https://github.com/cccchhhh/webmcp-extension/blob/main/PRIVACY.md"
       target="_blank"
       rel="noopener noreferrer"
@@ -92,14 +107,14 @@ defineEmits<{ tools: []; settings: [] }>();
   <button class="btn full" @click="$emit('tools')">{{ t('前往 Tools') }}</button>
 </template>
 <style scoped>
-.privacy-link {
+.help-link {
   color: var(--blue);
   font-size: 12px;
   line-height: 1.8;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.privacy-link:focus-visible {
+.help-link:focus-visible {
   outline: 2px solid var(--blue);
   outline-offset: 4px;
   border-radius: 2px;
