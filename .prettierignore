@@ -1,0 +1,3 @@
+# Copied verbatim from the versioned bridge artifact; update with sync:bridge-protocol.
+packages/protocol/bridge-v1.ts
+dist/

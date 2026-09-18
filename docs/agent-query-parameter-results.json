@@ -1,0 +1,915 @@
+{
+  "date": "2026-09-17T08:12:39.137Z",
+  "target": "http://127.0.0.1:4177/",
+  "tool": "set_order_list_query",
+  "initialFilters": {
+    "query": "键盘",
+    "labels": []
+  },
+  "finalFilters": {
+    "query": "键盘",
+    "labels": []
+  },
+  "tested": 29,
+  "passed": 24,
+  "findings": 5,
+  "failed": 0,
+  "results": [
+    {
+      "parameter": "query",
+      "name": "关键词匹配",
+      "arguments": {
+        "query": "键盘"
+      },
+      "expected": "ok",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 75,
+      "callId": "7283cb8d-8145-4ae8-8cde-19da7f724c62",
+      "delivery": "acknowledged",
+      "execution": "returned",
+      "business": "unclassified",
+      "returned": {
+        "name": "set_order_list_query",
+        "arguments": {
+          "query": "键盘"
+        },
+        "filters": {
+          "query": "键盘",
+          "labels": []
+        },
+        "total": 2,
+        "records": [
+          {
+            "orderNo": "TEST-1001",
+            "product": "无线机械键盘",
+            "amount": 399,
+            "payment": "已支付"
+          },
+          {
+            "orderNo": "TEST-1003",
+            "product": "轻薄键盘",
+            "amount": 199,
+            "payment": "已支付"
+          }
+        ]
+      }
+    },
+    {
+      "parameter": "query",
+      "name": "精确订单号",
+      "arguments": {
+        "query": "TEST-1002"
+      },
+      "expected": "ok",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 63,
+      "callId": "f6baa803-f365-4e50-8609-121708031d95",
+      "delivery": "acknowledged",
+      "execution": "returned",
+      "business": "unclassified",
+      "returned": {
+        "name": "set_order_list_query",
+        "arguments": {
+          "query": "TEST-1002"
+        },
+        "filters": {
+          "query": "TEST-1002",
+          "labels": []
+        },
+        "total": 1,
+        "records": [
+          {
+            "orderNo": "TEST-1002",
+            "product": "便携显示器",
+            "amount": 899,
+            "payment": "待支付"
+          }
+        ]
+      }
+    },
+    {
+      "parameter": "query",
+      "name": "英文大小写匹配",
+      "arguments": {
+        "query": "test-1001"
+      },
+      "expected": "ok",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 63,
+      "callId": "c17943eb-d3b8-407c-b99a-5f764f6cbc11",
+      "delivery": "acknowledged",
+      "execution": "returned",
+      "business": "unclassified",
+      "returned": {
+        "name": "set_order_list_query",
+        "arguments": {
+          "query": "test-1001"
+        },
+        "filters": {
+          "query": "test-1001",
+          "labels": []
+        },
+        "total": 1,
+        "records": [
+          {
+            "orderNo": "TEST-1001",
+            "product": "无线机械键盘",
+            "amount": 399,
+            "payment": "已支付"
+          }
+        ]
+      }
+    },
+    {
+      "parameter": "query",
+      "name": "无匹配结果",
+      "arguments": {
+        "query": "__NO_MATCH_AGENT_TEST__"
+      },
+      "expected": "ok",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 55,
+      "callId": "e10cbf15-0f68-4224-8283-690e79aa0a46",
+      "delivery": "acknowledged",
+      "execution": "returned",
+      "business": "unclassified",
+      "returned": {
+        "name": "set_order_list_query",
+        "arguments": {
+          "query": "__NO_MATCH_AGENT_TEST__"
+        },
+        "filters": {
+          "query": "__NO_MATCH_AGENT_TEST__",
+          "labels": []
+        },
+        "total": 0,
+        "records": []
+      }
+    },
+    {
+      "parameter": "query",
+      "name": "空字符串清空",
+      "arguments": {
+        "query": ""
+      },
+      "expected": "ok",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 58,
+      "callId": "3102a019-3eea-44b6-930c-13d8ca5d7c01",
+      "delivery": "acknowledged",
+      "execution": "returned",
+      "business": "unclassified",
+      "returned": {
+        "name": "set_order_list_query",
+        "arguments": {
+          "query": ""
+        },
+        "filters": {
+          "query": "",
+          "labels": []
+        },
+        "total": 4,
+        "records": [
+          {
+            "orderNo": "TEST-1001",
+            "product": "无线机械键盘",
+            "amount": 399,
+            "payment": "已支付"
+          },
+          {
+            "orderNo": "TEST-1002",
+            "product": "便携显示器",
+            "amount": 899,
+            "payment": "待支付"
+          },
+          {
+            "orderNo": "TEST-1003",
+            "product": "轻薄键盘",
+            "amount": 199,
+            "payment": "已支付"
+          },
+          {
+            "orderNo": "TEST-1004",
+            "product": "USB-C 扩展坞",
+            "amount": 259,
+            "payment": "待支付"
+          }
+        ]
+      }
+    },
+    {
+      "parameter": "query",
+      "name": "省略所有参数",
+      "arguments": {},
+      "expected": "ok",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 59,
+      "callId": "8379e3d3-e08f-4486-a3c7-a1594c948cc3",
+      "delivery": "acknowledged",
+      "execution": "returned",
+      "business": "unclassified",
+      "returned": {
+        "name": "set_order_list_query",
+        "arguments": {},
+        "filters": {
+          "query": "",
+          "labels": []
+        },
+        "total": 4,
+        "records": [
+          {
+            "orderNo": "TEST-1001",
+            "product": "无线机械键盘",
+            "amount": 399,
+            "payment": "已支付"
+          },
+          {
+            "orderNo": "TEST-1002",
+            "product": "便携显示器",
+            "amount": 899,
+            "payment": "待支付"
+          },
+          {
+            "orderNo": "TEST-1003",
+            "product": "轻薄键盘",
+            "amount": 199,
+            "payment": "已支付"
+          },
+          {
+            "orderNo": "TEST-1004",
+            "product": "USB-C 扩展坞",
+            "amount": 259,
+            "payment": "待支付"
+          }
+        ]
+      }
+    },
+    {
+      "parameter": "labels",
+      "name": "空数组",
+      "arguments": {
+        "query": "键盘",
+        "labels": []
+      },
+      "expected": "ok",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 68,
+      "callId": "fdbc47d2-1952-4a30-86b9-a1bc041ca0de",
+      "delivery": "acknowledged",
+      "execution": "returned",
+      "business": "unclassified",
+      "returned": {
+        "name": "set_order_list_query",
+        "arguments": {
+          "query": "键盘",
+          "labels": []
+        },
+        "filters": {
+          "query": "键盘",
+          "labels": []
+        },
+        "total": 2,
+        "records": [
+          {
+            "orderNo": "TEST-1001",
+            "product": "无线机械键盘",
+            "amount": 399,
+            "payment": "已支付"
+          },
+          {
+            "orderNo": "TEST-1003",
+            "product": "轻薄键盘",
+            "amount": 199,
+            "payment": "已支付"
+          }
+        ]
+      }
+    },
+    {
+      "parameter": "labels",
+      "name": "已支付",
+      "arguments": {
+        "query": "键盘",
+        "labels": [
+          "已支付"
+        ]
+      },
+      "expected": "ok",
+      "status": "finding",
+      "failures": [],
+      "observation": "Schema 接受 labels，但 set_order_list_query 不应用 labels；当前 fixture 只由 select_order_filter_options 更新支付状态。",
+      "elapsedMs": 61,
+      "callId": "fd4f235c-739e-46aa-a9b8-39e2eede40ca",
+      "delivery": "acknowledged",
+      "execution": "returned",
+      "business": "unclassified",
+      "returned": {
+        "name": "set_order_list_query",
+        "arguments": {
+          "query": "键盘",
+          "labels": [
+            "已支付"
+          ]
+        },
+        "filters": {
+          "query": "键盘",
+          "labels": []
+        },
+        "total": 2,
+        "records": [
+          {
+            "orderNo": "TEST-1001",
+            "product": "无线机械键盘",
+            "amount": 399,
+            "payment": "已支付"
+          },
+          {
+            "orderNo": "TEST-1003",
+            "product": "轻薄键盘",
+            "amount": 199,
+            "payment": "已支付"
+          }
+        ]
+      }
+    },
+    {
+      "parameter": "labels",
+      "name": "待支付",
+      "arguments": {
+        "query": "键盘",
+        "labels": [
+          "待支付"
+        ]
+      },
+      "expected": "ok",
+      "status": "finding",
+      "failures": [],
+      "observation": "Schema 接受 labels，但 set_order_list_query 不应用 labels；当前 fixture 只由 select_order_filter_options 更新支付状态。",
+      "elapsedMs": 60,
+      "callId": "5bdaf1fb-2fae-48d7-9d3e-3b80fb589bf1",
+      "delivery": "acknowledged",
+      "execution": "returned",
+      "business": "unclassified",
+      "returned": {
+        "name": "set_order_list_query",
+        "arguments": {
+          "query": "键盘",
+          "labels": [
+            "待支付"
+          ]
+        },
+        "filters": {
+          "query": "键盘",
+          "labels": []
+        },
+        "total": 2,
+        "records": [
+          {
+            "orderNo": "TEST-1001",
+            "product": "无线机械键盘",
+            "amount": 399,
+            "payment": "已支付"
+          },
+          {
+            "orderNo": "TEST-1003",
+            "product": "轻薄键盘",
+            "amount": 199,
+            "payment": "已支付"
+          }
+        ]
+      }
+    },
+    {
+      "parameter": "labels",
+      "name": "两个枚举值",
+      "arguments": {
+        "query": "键盘",
+        "labels": [
+          "已支付",
+          "待支付"
+        ]
+      },
+      "expected": "ok",
+      "status": "finding",
+      "failures": [],
+      "observation": "Schema 接受 labels，但 set_order_list_query 不应用 labels；当前 fixture 只由 select_order_filter_options 更新支付状态。",
+      "elapsedMs": 59,
+      "callId": "7a441c52-bbee-4d9b-82ef-919bbceb2102",
+      "delivery": "acknowledged",
+      "execution": "returned",
+      "business": "unclassified",
+      "returned": {
+        "name": "set_order_list_query",
+        "arguments": {
+          "query": "键盘",
+          "labels": [
+            "已支付",
+            "待支付"
+          ]
+        },
+        "filters": {
+          "query": "键盘",
+          "labels": []
+        },
+        "total": 2,
+        "records": [
+          {
+            "orderNo": "TEST-1001",
+            "product": "无线机械键盘",
+            "amount": 399,
+            "payment": "已支付"
+          },
+          {
+            "orderNo": "TEST-1003",
+            "product": "轻薄键盘",
+            "amount": 199,
+            "payment": "已支付"
+          }
+        ]
+      }
+    },
+    {
+      "parameter": "labels",
+      "name": "单独传 labels",
+      "arguments": {
+        "labels": [
+          "待支付"
+        ]
+      },
+      "expected": "ok",
+      "status": "finding",
+      "failures": [],
+      "observation": "Schema 接受 labels，但 set_order_list_query 不应用 labels；当前 fixture 只由 select_order_filter_options 更新支付状态。",
+      "elapsedMs": 56,
+      "callId": "34dbc264-1cc3-407a-83d3-7fd55cc90df3",
+      "delivery": "acknowledged",
+      "execution": "returned",
+      "business": "unclassified",
+      "returned": {
+        "name": "set_order_list_query",
+        "arguments": {
+          "labels": [
+            "待支付"
+          ]
+        },
+        "filters": {
+          "query": "",
+          "labels": []
+        },
+        "total": 4,
+        "records": [
+          {
+            "orderNo": "TEST-1001",
+            "product": "无线机械键盘",
+            "amount": 399,
+            "payment": "已支付"
+          },
+          {
+            "orderNo": "TEST-1002",
+            "product": "便携显示器",
+            "amount": 899,
+            "payment": "待支付"
+          },
+          {
+            "orderNo": "TEST-1003",
+            "product": "轻薄键盘",
+            "amount": 199,
+            "payment": "已支付"
+          },
+          {
+            "orderNo": "TEST-1004",
+            "product": "USB-C 扩展坞",
+            "amount": 259,
+            "payment": "待支付"
+          }
+        ]
+      }
+    },
+    {
+      "parameter": "delay",
+      "name": "零延迟",
+      "arguments": {
+        "query": "键盘",
+        "delay": 0
+      },
+      "expected": "ok",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 63,
+      "callId": "e0ad418e-da70-417b-a358-3af9fdc00b71",
+      "delivery": "acknowledged",
+      "execution": "returned",
+      "business": "unclassified",
+      "returned": {
+        "name": "set_order_list_query",
+        "arguments": {
+          "query": "键盘",
+          "delay": 0
+        },
+        "filters": {
+          "query": "键盘",
+          "labels": []
+        },
+        "total": 2,
+        "records": [
+          {
+            "orderNo": "TEST-1001",
+            "product": "无线机械键盘",
+            "amount": 399,
+            "payment": "已支付"
+          },
+          {
+            "orderNo": "TEST-1003",
+            "product": "轻薄键盘",
+            "amount": 199,
+            "payment": "已支付"
+          }
+        ]
+      }
+    },
+    {
+      "parameter": "delay",
+      "name": "150ms 延迟",
+      "arguments": {
+        "query": "键盘",
+        "delay": 150
+      },
+      "expected": "ok",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 210,
+      "callId": "a6fe30ba-df80-4d47-8737-e44567262a7f",
+      "delivery": "acknowledged",
+      "execution": "returned",
+      "business": "unclassified",
+      "returned": {
+        "name": "set_order_list_query",
+        "arguments": {
+          "query": "键盘",
+          "delay": 150
+        },
+        "filters": {
+          "query": "键盘",
+          "labels": []
+        },
+        "total": 2,
+        "records": [
+          {
+            "orderNo": "TEST-1001",
+            "product": "无线机械键盘",
+            "amount": 399,
+            "payment": "已支付"
+          },
+          {
+            "orderNo": "TEST-1003",
+            "product": "轻薄键盘",
+            "amount": 199,
+            "payment": "已支付"
+          }
+        ]
+      }
+    },
+    {
+      "parameter": "fail",
+      "name": "显式 false",
+      "arguments": {
+        "query": "TEST-1004",
+        "fail": false
+      },
+      "expected": "ok",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 59,
+      "callId": "b7d8ad2e-38f9-43b2-be90-746d0cfefe76",
+      "delivery": "acknowledged",
+      "execution": "returned",
+      "business": "unclassified",
+      "returned": {
+        "name": "set_order_list_query",
+        "arguments": {
+          "query": "TEST-1004",
+          "fail": false
+        },
+        "filters": {
+          "query": "TEST-1004",
+          "labels": []
+        },
+        "total": 1,
+        "records": [
+          {
+            "orderNo": "TEST-1004",
+            "product": "USB-C 扩展坞",
+            "amount": 259,
+            "payment": "待支付"
+          }
+        ]
+      }
+    },
+    {
+      "parameter": "fail",
+      "name": "显式 true 不应修改状态",
+      "arguments": {
+        "query": "不应生效",
+        "fail": true
+      },
+      "expected": "business-error",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 58,
+      "callId": "beebb506-2ddf-4e69-8c11-a12d542e24b4",
+      "delivery": "acknowledged",
+      "execution": "returned",
+      "business": "error",
+      "returned": {
+        "code": "TEST_BUSINESS_ERROR",
+        "message": "这是主动触发的测试业务错误，未修改筛选条件。"
+      }
+    },
+    {
+      "parameter": "all",
+      "name": "四参数组合正常路径",
+      "arguments": {
+        "query": "键盘",
+        "labels": [
+          "待支付"
+        ],
+        "delay": 80,
+        "fail": false
+      },
+      "expected": "ok",
+      "status": "finding",
+      "failures": [],
+      "observation": "Schema 接受 labels，但 set_order_list_query 不应用 labels；当前 fixture 只由 select_order_filter_options 更新支付状态。",
+      "elapsedMs": 141,
+      "callId": "edc6010c-2385-485c-bb61-67e320277e84",
+      "delivery": "acknowledged",
+      "execution": "returned",
+      "business": "unclassified",
+      "returned": {
+        "name": "set_order_list_query",
+        "arguments": {
+          "query": "键盘",
+          "labels": [
+            "待支付"
+          ],
+          "delay": 80,
+          "fail": false
+        },
+        "filters": {
+          "query": "键盘",
+          "labels": []
+        },
+        "total": 2,
+        "records": [
+          {
+            "orderNo": "TEST-1001",
+            "product": "无线机械键盘",
+            "amount": 399,
+            "payment": "已支付"
+          },
+          {
+            "orderNo": "TEST-1003",
+            "product": "轻薄键盘",
+            "amount": 199,
+            "payment": "已支付"
+          }
+        ]
+      }
+    },
+    {
+      "parameter": "all",
+      "name": "四参数组合业务错误",
+      "arguments": {
+        "query": "不应生效",
+        "labels": [
+          "已支付"
+        ],
+        "delay": 80,
+        "fail": true
+      },
+      "expected": "business-error",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 149,
+      "callId": "3741cb35-b4d5-49a9-8c03-8050d5514b8b",
+      "delivery": "acknowledged",
+      "execution": "returned",
+      "business": "error",
+      "returned": {
+        "code": "TEST_BUSINESS_ERROR",
+        "message": "这是主动触发的测试业务错误，未修改筛选条件。"
+      }
+    },
+    {
+      "parameter": "query",
+      "name": "拒绝数字",
+      "arguments": {
+        "query": 123
+      },
+      "expected": "reject",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 37,
+      "callId": "b053ad27-572d-4e0b-8d23-3a436555d3ff",
+      "delivery": "not_sent",
+      "execution": "rejected",
+      "errorCode": "INVALID_ARGUMENTS",
+      "business": "unclassified"
+    },
+    {
+      "parameter": "query",
+      "name": "拒绝 null",
+      "arguments": {
+        "query": null
+      },
+      "expected": "reject",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 36,
+      "callId": "73f419cd-b2e6-4805-aa5b-2fb567c55cf8",
+      "delivery": "not_sent",
+      "execution": "rejected",
+      "errorCode": "INVALID_ARGUMENTS",
+      "business": "unclassified"
+    },
+    {
+      "parameter": "labels",
+      "name": "拒绝字符串",
+      "arguments": {
+        "labels": "已支付"
+      },
+      "expected": "reject",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 36,
+      "callId": "8f24df71-afe2-4a00-8d03-c230740e710f",
+      "delivery": "not_sent",
+      "execution": "rejected",
+      "errorCode": "INVALID_ARGUMENTS",
+      "business": "unclassified"
+    },
+    {
+      "parameter": "labels",
+      "name": "拒绝非法枚举",
+      "arguments": {
+        "labels": [
+          "退款"
+        ]
+      },
+      "expected": "reject",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 37,
+      "callId": "fae617e3-8cbe-4e7f-b4f0-3aa4a4984f6f",
+      "delivery": "not_sent",
+      "execution": "rejected",
+      "errorCode": "INVALID_ARGUMENTS",
+      "business": "unclassified"
+    },
+    {
+      "parameter": "labels",
+      "name": "拒绝重复项",
+      "arguments": {
+        "labels": [
+          "已支付",
+          "已支付"
+        ]
+      },
+      "expected": "reject",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 36,
+      "callId": "929fa08e-3d31-4efd-8177-4644427a6039",
+      "delivery": "not_sent",
+      "execution": "rejected",
+      "errorCode": "INVALID_ARGUMENTS",
+      "business": "unclassified"
+    },
+    {
+      "parameter": "labels",
+      "name": "拒绝非字符串元素",
+      "arguments": {
+        "labels": [
+          1
+        ]
+      },
+      "expected": "reject",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 33,
+      "callId": "1307fe5c-d9fa-48dd-b1e2-474748fcb4e0",
+      "delivery": "not_sent",
+      "execution": "rejected",
+      "errorCode": "INVALID_ARGUMENTS",
+      "business": "unclassified"
+    },
+    {
+      "parameter": "delay",
+      "name": "拒绝负数",
+      "arguments": {
+        "delay": -1
+      },
+      "expected": "reject",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 37,
+      "callId": "64bf20b7-b0f3-494d-b30d-6082a1eca0e1",
+      "delivery": "not_sent",
+      "execution": "rejected",
+      "errorCode": "INVALID_ARGUMENTS",
+      "business": "unclassified"
+    },
+    {
+      "parameter": "delay",
+      "name": "拒绝小数",
+      "arguments": {
+        "delay": 0.5
+      },
+      "expected": "reject",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 34,
+      "callId": "25355694-f11a-4634-93a0-2bfe256cf0d4",
+      "delivery": "not_sent",
+      "execution": "rejected",
+      "errorCode": "INVALID_ARGUMENTS",
+      "business": "unclassified"
+    },
+    {
+      "parameter": "delay",
+      "name": "拒绝超上限",
+      "arguments": {
+        "delay": 90001
+      },
+      "expected": "reject",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 35,
+      "callId": "18afdf5f-a225-4e21-b47f-fa500107fd86",
+      "delivery": "not_sent",
+      "execution": "rejected",
+      "errorCode": "INVALID_ARGUMENTS",
+      "business": "unclassified"
+    },
+    {
+      "parameter": "delay",
+      "name": "拒绝字符串",
+      "arguments": {
+        "delay": "150"
+      },
+      "expected": "reject",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 34,
+      "callId": "2b321d60-1e01-451c-b060-d078d9c16f65",
+      "delivery": "not_sent",
+      "execution": "rejected",
+      "errorCode": "INVALID_ARGUMENTS",
+      "business": "unclassified"
+    },
+    {
+      "parameter": "fail",
+      "name": "拒绝字符串",
+      "arguments": {
+        "fail": "true"
+      },
+      "expected": "reject",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 34,
+      "callId": "54f4fb99-0f2a-40de-bf59-d026709d1979",
+      "delivery": "not_sent",
+      "execution": "rejected",
+      "errorCode": "INVALID_ARGUMENTS",
+      "business": "unclassified"
+    },
+    {
+      "parameter": "schema",
+      "name": "拒绝未声明字段",
+      "arguments": {
+        "query": "键盘",
+        "unknownField": true
+      },
+      "expected": "reject",
+      "status": "passed",
+      "failures": [],
+      "elapsedMs": 35,
+      "callId": "ad7b5620-82a3-4937-86e9-850357b9a356",
+      "delivery": "not_sent",
+      "execution": "rejected",
+      "errorCode": "INVALID_ARGUMENTS",
+      "business": "unclassified"
+    }
+  ],
+  "limits": [
+    "未等待 delay=90000 的上界：服务端默认截止时间为60000ms；本轮覆盖0、80、150及非法负数/小数/90001/字符串。",
+    "这是原生测试 fixture，不代表真实业务订单页面。"
+  ]
+}

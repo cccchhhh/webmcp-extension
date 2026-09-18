@@ -1,0 +1,2257 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>WebMCP · 页面工具</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --blue: #315fe9;
+        --blue-soft: #edf2ff;
+        --ink: #202d43;
+        --muted: #7c899c;
+        --line: #e7ecf3;
+        --green: #168264;
+        --bg: #f7f9fc;
+        --red: #c44749;
+        --amber: #a26713;
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei',
+          sans-serif;
+        font-size: 13px;
+        color: var(--ink);
+        background: #eaf0f7;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      button,
+      input,
+      textarea {
+        font: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+      button,
+      a,
+      input,
+      textarea {
+        -webkit-tap-highlight-color: transparent;
+      }
+      button {
+        color: inherit;
+      }
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.45;
+      }
+      button:focus-visible,
+      a:focus-visible,
+      input:focus-visible,
+      textarea:focus-visible {
+        outline: 3px solid #9db5ff;
+        outline-offset: 3px;
+      }
+      button {
+        transition:
+          background 0.15s,
+          border-color 0.15s;
+      }
+      svg {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+        vertical-align: middle;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.7;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+      h2 {
+        font-size: 19px;
+        letter-spacing: -0.5px;
+      }
+      h3 {
+        font-size: 13px;
+      }
+      small {
+        font-size: 11px;
+      }
+      code,
+      pre,
+      textarea.mono,
+      .mono {
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      }
+      button {
+        border: 0;
+        background: none;
+      }
+      a {
+        color: var(--blue);
+      }
+      .app {
+        width: min(100%, 420px);
+        height: 100dvh;
+        min-height: 500px;
+        margin: auto;
+        background: white;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 0 70px #243c6810;
+        border-left: 1px solid #dce3ed;
+        border-right: 1px solid #dce3ed;
+        position: relative;
+      }
+      .header {
+        height: 68px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 22px;
+        border-bottom: 1px solid var(--line);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+      .logo {
+        width: 30px;
+        height: 30px;
+        background: var(--blue);
+        color: white;
+        border-radius: 9px;
+        display: grid;
+        place-items: center;
+        box-shadow: 0 3px 7px #315fe925;
+      }
+      .logo svg {
+        width: 20px;
+        height: 20px;
+      }
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .prototype {
+        font-size: 10px;
+        color: var(--muted);
+        padding: 4px 6px;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        letter-spacing: 0.3px;
+      }
+      .icon-btn {
+        height: 30px;
+        width: 30px;
+        display: inline-grid;
+        place-items: center;
+        border-radius: 6px;
+        color: #6d7c92;
+      }
+      .icon-btn:hover {
+        background: var(--bg);
+        color: var(--blue);
+      }
+      .scroll {
+        flex: 1;
+        overflow: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #dce3ed transparent;
+      }
+      .content {
+        padding: 22px;
+      }
+      .footer {
+        border-top: 1px solid var(--line);
+        background: #fcfdff;
+        flex-shrink: 0;
+        padding: 15px 22px 13px;
+      }
+      .footer-button {
+        width: 100%;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        text-align: left;
+        gap: 10px;
+      }
+      .connection-icon {
+        width: 33px;
+        height: 33px;
+        background: #edf1f7;
+        display: grid;
+        place-items: center;
+        border: 1px solid #e3e9f2;
+        border-radius: 8px;
+        color: #7889a3;
+      }
+      .connection-icon.online {
+        color: var(--green);
+        background: #edf8f2;
+      }
+      .footer-button strong {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .footer-button small {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        margin-top: 4px;
+      }
+      .footer-button .right {
+        margin-left: auto;
+        font-size: 11px;
+        color: var(--muted);
+        display: flex;
+        gap: 3px;
+        align-items: center;
+      }
+      .privacy {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        margin-top: 13px;
+        font-size: 10px;
+        color: #8d98a9;
+      }
+      .privacy svg {
+        width: 12px;
+        height: 12px;
+      }
+      .page-label {
+        font-size: 10px;
+        letter-spacing: 1.4px;
+        color: #8b99af;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      .page-card {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+        background: #fbfcfe;
+      }
+      .page-card-main {
+        display: flex;
+        gap: 11px;
+        align-items: center;
+        padding: 15px;
+      }
+      .site {
+        width: 38px;
+        height: 38px;
+        background: white;
+        border: 1px solid #e5eaf3;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        color: #6181bb;
+      }
+      .page-title {
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .domain {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 5px;
+        overflow-wrap: anywhere;
+      }
+      .page-card-main .icon-btn {
+        margin-left: auto;
+      }
+      .page-card-foot {
+        border-top: 1px solid var(--line);
+        padding: 9px 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 10px;
+        color: var(--muted);
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 10px;
+        border-radius: 4px;
+        line-height: 1.5;
+        padding: 3px 6px;
+        color: #6d7c92;
+        background: #f0f3f8;
+        white-space: nowrap;
+      }
+      .badge.green {
+        color: var(--green);
+        background: #eaf6ef;
+      }
+      .badge.blue {
+        color: var(--blue);
+        background: var(--blue-soft);
+      }
+      .badge.red {
+        color: var(--red);
+        background: #fff0f0;
+      }
+      .badge.amber {
+        color: var(--amber);
+        background: #fff5e5;
+      }
+      .dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+      .section-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 26px 0 12px;
+      }
+      .section-head h2 {
+        font-size: 13px;
+        letter-spacing: 0;
+        display: flex;
+        gap: 7px;
+        align-items: center;
+      }
+      .count {
+        font-size: 10px;
+        font-weight: 500;
+        color: #8897ab;
+        background: #f0f3f8;
+        border-radius: 4px;
+        padding: 2px 6px;
+      }
+      .section-head > span {
+        font-size: 10px;
+        color: var(--muted);
+      }
+      .tool-list {
+        display: grid;
+        gap: 10px;
+      }
+      .tool {
+        width: 100%;
+        text-align: left;
+        padding: 15px 14px;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        background: white;
+      }
+      .tool:hover {
+        border-color: #a5b8f2;
+        background: #fafbff;
+      }
+      .tool-top {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        min-width: 0;
+      }
+      .tool-symbol {
+        height: 28px;
+        width: 28px;
+        display: grid;
+        place-items: center;
+        color: var(--blue);
+        background: var(--blue-soft);
+        border-radius: 7px;
+        flex-shrink: 0;
+      }
+      .tool-symbol svg {
+        width: 16px;
+        height: 16px;
+      }
+      .tool code {
+        font-size: 11px;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+        min-width: 0;
+        line-height: 1.6;
+      }
+      .tool .chevron {
+        color: #a6b0c0;
+        margin-left: auto;
+        width: 14px;
+        flex-shrink: 0;
+      }
+      .tool p {
+        color: #778499;
+        font-size: 11px;
+        margin: 9px 0 12px;
+        line-height: 1.6;
+      }
+      .tool-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 10px;
+        color: #929daf;
+      }
+      .tool-meta > span {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .tool-meta svg {
+        width: 12px;
+        height: 12px;
+      }
+      .schema-tag {
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        padding: 2px 5px;
+        font-family: ui-monospace, monospace;
+        font-size: 9px;
+        color: #8794a8;
+      }
+      .share-entry {
+        margin-top: 22px;
+        padding: 15px;
+        background: #f7f9fd;
+        border: 1px solid #e8edf5;
+        border-radius: 9px;
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        width: 100%;
+        text-align: left;
+      }
+      .share-entry > svg {
+        color: #7590c0;
+        margin-top: 1px;
+      }
+      .share-entry strong {
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .share-entry p {
+        font-size: 10px;
+        line-height: 1.7;
+        color: var(--muted);
+        margin-top: 5px;
+      }
+      .share-entry .chevron {
+        width: 14px;
+        margin-left: auto;
+        align-self: center;
+      }
+      .bottom-note {
+        text-align: center;
+        color: #a1acba;
+        font-size: 10px;
+        margin: 22px 0 2px;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        justify-content: center;
+      }
+      .bottom-note svg {
+        width: 12px;
+        height: 12px;
+      }
+      .back {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        font-size: 11px;
+        color: var(--muted);
+        padding: 0;
+        margin-bottom: 22px;
+      }
+      .back svg {
+        width: 14px;
+      }
+      .view-description {
+        font-size: 11px;
+        line-height: 1.8;
+        color: var(--muted);
+        margin-top: 9px;
+      }
+      .detail-title {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      .detail-title .tool-symbol {
+        width: 34px;
+        height: 34px;
+      }
+      .detail-title h2 {
+        font-family: ui-monospace, monospace;
+        font-size: 14px;
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+        letter-spacing: -0.2px;
+      }
+      .detail-title p {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 5px;
+        line-height: 1.7;
+      }
+      .detail-title > div:last-child {
+        min-width: 0;
+      }
+      .tabs {
+        display: flex;
+        border-bottom: 1px solid var(--line);
+        margin-top: 24px;
+        gap: 22px;
+      }
+      .tabs button {
+        font-size: 12px;
+        padding: 11px 1px;
+        color: var(--muted);
+        border-bottom: 2px solid transparent;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .tabs button svg {
+        width: 14px;
+        height: 14px;
+      }
+      .tabs button.active {
+        color: var(--blue);
+        border-bottom-color: var(--blue);
+      }
+      .editor-box {
+        margin-top: 16px;
+        border: 1px solid #dfe6f1;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #fbfcff;
+      }
+      .editor-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 12px;
+        background: #f5f7fc;
+        border-bottom: 1px solid var(--line);
+        font-size: 10px;
+        color: #8a97ac;
+      }
+      .text-btn {
+        font-size: 11px;
+        color: var(--blue);
+        padding: 0;
+      }
+      .editor {
+        resize: vertical;
+        width: 100%;
+        min-height: 205px;
+        display: block;
+        padding: 15px;
+        border: none;
+        background: transparent;
+        color: #38527a;
+        font-size: 12px;
+        line-height: 1.8;
+        tab-size: 2;
+        outline-offset: -3px !important;
+      }
+      .btn {
+        border: 1px solid #dfe5ef;
+        background: white;
+        border-radius: 7px;
+        min-height: 36px;
+        padding: 8px 13px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+      .btn:hover {
+        background: #f6f8fc;
+      }
+      .btn.primary {
+        background: var(--blue);
+        color: white;
+        border-color: var(--blue);
+      }
+      .btn.primary:hover {
+        background: #2553d8;
+      }
+      .btn.danger {
+        color: var(--red);
+      }
+      .btn svg {
+        width: 15px;
+        height: 15px;
+      }
+      .full {
+        width: 100%;
+      }
+      .actions {
+        display: flex;
+        gap: 9px;
+        margin-top: 14px;
+      }
+      .actions .primary {
+        flex: 1;
+      }
+      .hint {
+        font-size: 10px;
+        color: var(--muted);
+        line-height: 1.8;
+        margin-top: 10px;
+      }
+      .error {
+        font-size: 11px;
+        line-height: 1.7;
+        color: var(--red);
+        background: #fff4f4;
+        border: 1px solid #f5dfe0;
+        border-radius: 6px;
+        padding: 10px;
+        margin-top: 10px;
+        overflow-wrap: anywhere;
+      }
+      .valid {
+        font-size: 11px;
+        color: var(--green);
+        margin-top: 10px;
+      }
+      .result {
+        margin-top: 24px;
+      }
+      .result-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      .result-head h3 {
+        font-size: 12px;
+      }
+      .result-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        font-size: 10px;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+      .code-block {
+        margin: 0;
+        padding: 14px;
+        background: #f6f8fc;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        font-size: 11px;
+        line-height: 1.8;
+        color: #435b80;
+        overflow: auto;
+        max-height: 340px;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+      .empty {
+        padding: 36px 15px;
+        text-align: center;
+      }
+      .empty > svg {
+        width: 30px;
+        height: 30px;
+        color: #9cadc6;
+        margin-bottom: 14px;
+      }
+      .empty h3 {
+        font-size: 13px;
+      }
+      .empty p {
+        font-size: 11px;
+        color: var(--muted);
+        line-height: 1.9;
+        margin: 9px auto 18px;
+        max-width: 280px;
+      }
+      .empty.compact {
+        padding: 24px 8px;
+        border: 1px dashed var(--line);
+        border-radius: 8px;
+      }
+      .empty.compact p {
+        margin-bottom: 0;
+      }
+      .notice {
+        font-size: 11px;
+        color: #657998;
+        line-height: 1.9;
+        background: #f2f6fe;
+        border: 1px solid #e4ebfa;
+        padding: 12px;
+        border-radius: 7px;
+        margin-top: 18px;
+      }
+      .notice.amber {
+        color: #94702e;
+        background: #fff9ee;
+        border-color: #f1e7d4;
+      }
+      .setting-card {
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        padding: 15px;
+        margin-top: 20px;
+      }
+      .setting-row {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .setting-row strong {
+        font-size: 12px;
+      }
+      .setting-row p {
+        color: var(--muted);
+        font-size: 10px;
+        line-height: 1.7;
+        margin-top: 5px;
+      }
+      .switch {
+        width: 34px;
+        height: 20px;
+        border-radius: 20px;
+        background: #cbd4e2;
+        padding: 3px;
+        flex-shrink: 0;
+      }
+      .switch span {
+        width: 14px;
+        height: 14px;
+        background: white;
+        display: block;
+        border-radius: 50%;
+        box-shadow: 0 1px 3px #0002;
+        transition: transform 0.15s;
+      }
+      .switch.on {
+        background: var(--blue);
+      }
+      .switch.on span {
+        transform: translateX(14px);
+      }
+      .field {
+        display: block;
+        font-size: 11px;
+        font-weight: 500;
+        margin: 21px 0 9px;
+      }
+      .input {
+        width: 100%;
+        border: 1px solid #dfe5ef;
+        border-radius: 6px;
+        padding: 11px 12px;
+        font-size: 12px;
+        background: #fcfdff;
+        color: var(--ink);
+      }
+      .device-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .device-row .site {
+        width: 34px;
+        height: 34px;
+      }
+      .device-row strong {
+        font-size: 12px;
+      }
+      .device-row small {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        margin-top: 4px;
+      }
+      .device-row > .badge {
+        margin-left: auto;
+      }
+      .divider {
+        height: 1px;
+        background: var(--line);
+        margin: 16px 0;
+      }
+      .endpoint {
+        display: flex;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        padding: 8px 10px;
+        gap: 4px;
+        align-items: center;
+        margin-top: 9px;
+        background: #fbfcfe;
+      }
+      .endpoint code {
+        font-size: 10px;
+        overflow-wrap: anywhere;
+        flex: 1;
+        min-width: 0;
+      }
+      .check-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 15px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .check-row:last-child {
+        border: 0;
+      }
+      .check-row input {
+        accent-color: var(--blue);
+        margin: 4px 0 0;
+        width: 15px;
+        height: 15px;
+        flex-shrink: 0;
+      }
+      .check-row code {
+        font-size: 11px;
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+      }
+      .check-row span {
+        min-width: 0;
+      }
+      .check-row small {
+        display: block;
+        color: var(--muted);
+        line-height: 1.7;
+        margin-top: 5px;
+        font-size: 10px;
+      }
+      .filter {
+        display: flex;
+        gap: 6px;
+        margin: 22px 0 16px;
+      }
+      .filter button {
+        padding: 6px 11px;
+        border-radius: 5px;
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .filter button.active {
+        background: var(--blue-soft);
+        color: var(--blue);
+      }
+      .history-row {
+        width: 100%;
+        text-align: left;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 13px;
+        margin-bottom: 10px;
+      }
+      .history-row code {
+        font-size: 11px;
+        overflow-wrap: anywhere;
+        display: block;
+        margin-bottom: 10px;
+      }
+      .history-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 10px;
+        color: var(--muted);
+      }
+      .history-meta .badge {
+        margin-left: auto;
+      }
+      .detail-grid {
+        display: grid;
+        grid-template-columns: 70px 1fr;
+        gap: 13px 10px;
+        font-size: 11px;
+        margin: 24px 0;
+      }
+      .detail-grid dt {
+        color: var(--muted);
+      }
+      .detail-grid dd {
+        margin: 0;
+        overflow-wrap: anywhere;
+      }
+      .toast {
+        position: absolute;
+        z-index: 5;
+        bottom: 117px;
+        left: 20px;
+        right: 20px;
+        background: #263953;
+        color: white;
+        padding: 12px 15px;
+        font-size: 11px;
+        line-height: 1.7;
+        box-shadow: 0 5px 20px #243c6820;
+        border-radius: 8px;
+        pointer-events: none;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      .spin {
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @media (min-width: 600px) {
+        .app {
+          height: calc(100dvh - 48px);
+          margin: 24px auto;
+          border: 1px solid #dce3ed;
+          border-radius: 13px;
+          overflow: hidden;
+        }
+      }
+      @media (max-width: 380px) {
+        .content {
+          padding: 18px;
+        }
+        .header {
+          padding: 0 18px;
+        }
+        .footer {
+          padding: 14px 18px;
+        }
+        .tool {
+          padding: 13px 11px;
+        }
+        .tool code {
+          font-size: 10px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *:before,
+        *:after {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+
+      /* Four workspaces share one persistent navigation rail. */
+      :root {
+        --muted: #69788e;
+      }
+      .header {
+        height: 62px;
+        border-bottom: 0;
+      }
+      .brand {
+        font-family:
+          'Avenir Next',
+          -apple-system,
+          sans-serif;
+      }
+      .primary-tabs {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        padding: 0 14px;
+        border-bottom: 1px solid var(--line);
+        flex-shrink: 0;
+        background: white;
+      }
+      .primary-tabs button {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        align-items: center;
+        height: 47px;
+        padding: 0 3px;
+        color: #748198;
+        font-size: 12px;
+        font-weight: 600;
+        position: relative;
+      }
+      .primary-tabs svg {
+        width: 15px;
+        height: 15px;
+      }
+      .primary-tabs button[aria-selected='true'] {
+        color: var(--blue);
+      }
+      .primary-tabs button[aria-selected='true']:after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        height: 3px;
+        background: var(--blue);
+        left: 10px;
+        right: 10px;
+        border-radius: 3px 3px 0 0;
+      }
+      .primary-tabs button:hover {
+        background: #f8faff;
+      }
+      .footer {
+        padding: 11px 22px;
+      }
+      .status-strip {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 10px;
+        gap: 8px;
+      }
+      .status-strip span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .status-strip svg {
+        width: 12px;
+        height: 12px;
+      }
+      .status-strip button {
+        font-size: 10px;
+        color: var(--blue);
+        padding: 3px 0;
+      }
+      .workspace-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 19px;
+        gap: 10px;
+      }
+      .workspace-heading h2 {
+        font-size: 20px;
+        letter-spacing: -0.6px;
+      }
+      .workspace-heading p {
+        font-size: 11px;
+        line-height: 1.7;
+        color: var(--muted);
+        margin-top: 7px;
+      }
+      .workspace-heading .icon-btn {
+        flex-shrink: 0;
+      }
+      .eyebrow {
+        font:
+          10px ui-monospace,
+          monospace;
+        color: var(--blue);
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+      }
+      .section-head {
+        margin-top: 22px;
+      }
+      .page-label {
+        letter-spacing: 1px;
+      }
+      .chat-context {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        background: #f7f9fd;
+        border: 1px solid var(--line);
+        padding: 10px 12px;
+        border-radius: 8px;
+        font-size: 11px;
+      }
+      .chat-context svg {
+        width: 14px;
+        color: var(--blue);
+      }
+      .chat-context small {
+        margin-left: auto;
+        color: var(--green);
+        font-size: 10px;
+      }
+      .chat-welcome {
+        padding: 38px 2px 24px;
+      }
+      .chat-emblem {
+        height: 43px;
+        width: 43px;
+        border-radius: 13px;
+        background: var(--blue-soft);
+        color: var(--blue);
+        display: grid;
+        place-items: center;
+        margin-bottom: 20px;
+      }
+      .chat-emblem svg {
+        width: 23px;
+        height: 23px;
+      }
+      .chat-welcome h3 {
+        font-size: 23px;
+        line-height: 1.5;
+        letter-spacing: -0.7px;
+        font-weight: 650;
+      }
+      .chat-welcome p {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.9;
+        margin-top: 10px;
+      }
+      .suggestions {
+        display: grid;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+      .suggestion {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border: 1px solid var(--line);
+        padding: 12px;
+        border-radius: 8px;
+        text-align: left;
+        font-size: 11px;
+      }
+      .suggestion svg {
+        width: 14px;
+        color: #8d9cb2;
+      }
+      .suggestion:hover {
+        border-color: #a7bbf4;
+        background: #f8faff;
+      }
+      .composer {
+        border: 1px solid #cfdaf0;
+        border-radius: 11px;
+        background: white;
+        padding: 12px;
+        box-shadow: 0 3px 12px #315fe908;
+        margin-top: 18px;
+      }
+      .composer textarea {
+        border: 0;
+        width: 100%;
+        resize: vertical;
+        min-height: 66px;
+        max-height: 150px;
+        background: transparent;
+        font-size: 12px;
+        line-height: 1.7;
+        color: var(--ink);
+      }
+      .composer-bottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-top: 9px;
+      }
+      .model-select {
+        max-width: 240px;
+        min-width: 0;
+        border: 0;
+        background: #f3f6fc;
+        color: #516681;
+        padding: 7px 8px;
+        border-radius: 5px;
+        font: 10px inherit;
+      }
+      .send {
+        width: 31px;
+        height: 31px;
+        border-radius: 7px;
+        background: var(--blue);
+        color: white;
+        display: grid;
+        place-items: center;
+      }
+      .send svg {
+        width: 16px;
+      }
+      .chat-notice {
+        font-size: 10px;
+        color: var(--muted);
+        line-height: 1.8;
+        text-align: center;
+        margin-top: 10px;
+      }
+      .chat-thread {
+        display: grid;
+        gap: 18px;
+        margin-top: 22px;
+      }
+      .message {
+        font-size: 12px;
+        line-height: 1.9;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+      .message.user {
+        background: #edf2ff;
+        border-radius: 10px 10px 2px 10px;
+        padding: 11px 14px;
+        margin-left: 32px;
+      }
+      .message.assistant {
+        padding: 0 2px;
+      }
+      .message-label {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--blue);
+        margin-bottom: 6px;
+        letter-spacing: 0.3px;
+      }
+      .call-trace {
+        border: 1px solid #dce6f7;
+        border-left: 3px solid var(--blue);
+        border-radius: 7px;
+        padding: 12px;
+        background: #fbfcff;
+      }
+      .call-trace code {
+        font-size: 11px;
+      }
+      .call-trace .trace-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        align-items: center;
+      }
+      .call-trace p {
+        font-size: 11px;
+        line-height: 1.8;
+        margin-top: 8px;
+        color: var(--muted);
+      }
+      .call-trace pre {
+        font-size: 10px;
+        line-height: 1.7;
+        margin: 10px 0 0;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+      .settings-switcher {
+        display: flex;
+        gap: 4px;
+        padding: 4px;
+        background: #f1f4f9;
+        border-radius: 8px;
+        margin: 20px 0;
+      }
+      .settings-switcher button {
+        flex: 1;
+        font-size: 11px;
+        padding: 8px;
+        border-radius: 5px;
+        color: var(--muted);
+      }
+      .settings-switcher button.active {
+        background: white;
+        color: var(--ink);
+        box-shadow: 0 1px 4px #1829460c;
+      }
+      .profile-summary {
+        display: flex;
+        gap: 11px;
+        align-items: center;
+        padding: 14px;
+        border: 1px solid #dce5f7;
+        border-radius: 9px;
+        background: #fafcff;
+      }
+      .profile-summary .tool-symbol {
+        width: 34px;
+        height: 34px;
+      }
+      .profile-summary strong {
+        font-size: 12px;
+      }
+      .profile-summary p {
+        font-size: 10px;
+        color: var(--muted);
+        margin-top: 5px;
+      }
+      .profile-summary .badge {
+        margin-left: auto;
+      }
+      .field {
+        margin-top: 18px;
+      }
+      .input {
+        background: white;
+      }
+      .input-pair {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .key-input {
+        display: flex;
+        position: relative;
+      }
+      .key-input .input {
+        padding-right: 42px;
+      }
+      .key-input button {
+        position: absolute;
+        right: 6px;
+        top: 6px;
+      }
+      .inline-check {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 11px;
+        margin-top: 15px;
+        line-height: 1.6;
+      }
+      .inline-check input {
+        accent-color: var(--blue);
+      }
+      .help-intro {
+        padding: 21px;
+        background: #f2f6ff;
+        border: 1px solid #e3eafb;
+        border-radius: 10px;
+      }
+      .help-intro h3 {
+        font-size: 17px;
+        line-height: 1.6;
+        margin: 12px 0 7px;
+      }
+      .help-intro p {
+        font-size: 11px;
+        line-height: 1.9;
+        color: var(--muted);
+      }
+      .help-step {
+        display: flex;
+        gap: 13px;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .step-number {
+        width: 23px;
+        height: 23px;
+        background: #f0f4fb;
+        color: #637fac;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font:
+          11px ui-monospace,
+          monospace;
+        flex-shrink: 0;
+      }
+      .help-step strong {
+        font-size: 12px;
+      }
+      .help-step p {
+        font-size: 11px;
+        color: var(--muted);
+        line-height: 1.8;
+        margin-top: 5px;
+      }
+      .faq {
+        border-bottom: 1px solid var(--line);
+        font-size: 11px;
+      }
+      .faq summary {
+        cursor: pointer;
+        padding: 15px 0;
+        font-weight: 600;
+        line-height: 1.7;
+      }
+      .faq p {
+        color: var(--muted);
+        line-height: 1.9;
+        padding: 0 0 15px;
+      }
+      .toast {
+        bottom: 64px;
+      }
+      .tool p {
+        color: #69788e;
+      }
+      .tool-meta {
+        color: #79869a;
+      }
+      .page-card-foot {
+        color: #69788e;
+      }
+      @media (max-width: 380px) {
+        .primary-tabs {
+          padding: 0 8px;
+        }
+        .primary-tabs button {
+          font-size: 11px;
+          gap: 5px;
+        }
+        .primary-tabs svg {
+          width: 14px;
+        }
+        .input-pair {
+          grid-template-columns: 1fr;
+        }
+        .chat-welcome {
+          padding-top: 28px;
+        }
+        .model-select {
+          max-width: 230px;
+        }
+      }
+
+      .chat-welcome {
+        padding: 20px 2px 16px;
+      }
+      .chat-emblem {
+        width: 34px;
+        height: 34px;
+        margin-bottom: 12px;
+        border-radius: 10px;
+      }
+      .chat-emblem svg {
+        width: 20px;
+        height: 20px;
+      }
+      .chat-welcome h3 {
+        font-size: 21px;
+        line-height: 1.4;
+      }
+      .chat-welcome p {
+        margin-top: 8px;
+        font-size: 11px;
+        line-height: 1.7;
+      }
+      .suggestion {
+        padding: 10px 12px;
+      }
+      .suggestions {
+        margin-bottom: 12px;
+        gap: 7px;
+      }
+      .composer {
+        margin-top: 12px;
+      }
+      .composer textarea {
+        min-height: 48px;
+      }
+      .chat-notice {
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <button class="brand" data-action="home" aria-label="WebMCP 工具首页">
+          <span class="logo" data-icon="layers"></span>WebMCP
+        </button>
+        <div class="header-actions">
+          <span class="prototype">离线原型</span
+          ><button
+            class="icon-btn"
+            data-action="history"
+            aria-label="会话记录"
+            title="会话记录"
+            data-icon="history"
+          ></button>
+        </div>
+      </header>
+      <nav class="primary-tabs" role="tablist" aria-label="主导航" id="primary-tabs"></nav>
+      <main class="scroll" id="main">
+        <div class="content" id="view" role="tabpanel" tabindex="0"></div>
+      </main>
+      <footer class="footer" id="footer"></footer>
+      <div id="toast" class="toast" role="status" hidden></div>
+      <div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
+    </div>
+    <script>
+      'use strict';
+      const icons = {
+        layers: '<path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/>',
+        history: '<path d="M3 11a9 9 0 1 1 2.7 7M3 4v7h7"/><path d="M12 7v5l3 2"/>',
+        settings:
+          '<path d="M4 7h16M4 17h16"/><rect x="7" y="4" width="4" height="6" rx="1"/><rect x="14" y="14" width="4" height="6" rx="1"/>',
+        globe:
+          '<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/>',
+        refresh: '<path d="M20 7a9 9 0 0 0-15-1L3 9m0-6v6h6M4 17a9 9 0 0 0 15 1l2-3m0 6v-6h-6"/>',
+        code: '<path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18"/>',
+        chevron: '<path d="m9 5 7 7-7 7"/>',
+        shield: '<path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Z"/><path d="m8 12 3 3 5-6"/>',
+        lock: '<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/>',
+        link: '<path d="m10 13 4-4m-6 6-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0m2 2 1-1a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0"/>',
+        back: '<path d="m10 5-7 7 7 7M3 12h18"/>',
+        play: '<path d="m7 4 14 8-14 8V4Z"/>',
+        file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"/><path d="M14 2v6h6M8 13h8M8 17h5"/>',
+        copy: '<rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V3H3v13h5"/>',
+        monitor: '<rect x="3" y="3" width="18" height="13" rx="2"/><path d="M8 21h8m-4-5v5"/>',
+        alert: '<path d="m12 3 10 18H2L12 3Zm0 6v5m0 3v.2"/>',
+        check: '<path d="m5 12 4 4L19 6"/>',
+        terminal: '<path d="m5 6 6 6-6 6m8 0h6"/>',
+        arrow: '<path d="M3 12h18m-7-7 7 7-7 7"/>',
+      };
+      const icon = (name, cls = '') =>
+        `<svg class="${cls}" aria-hidden="true" viewBox="0 0 24 24">${icons[name] || icons.code}</svg>`;
+      const esc = (value) =>
+        String(value).replace(
+          /[&<>"']/g,
+          (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c],
+        );
+      const pretty = (value) => JSON.stringify(value, null, 2);
+      const tools = [
+        {
+          name: 'query_orders',
+          description: '查询订单，获取当前页面的接口结果',
+          schema: {
+            type: 'object',
+            properties: {
+              query: {
+                type: 'object',
+                properties: {
+                  searchType: { type: 'string', default: '1' },
+                  searchText: { type: 'string', default: '' },
+                  payStatusList: { type: 'array', items: { type: 'number' } },
+                },
+                additionalProperties: false,
+              },
+              buttonSelections: {
+                type: 'object',
+                properties: {
+                  belongerIdList: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: { label: { type: 'string' } },
+                      required: ['label'],
+                      additionalProperties: false,
+                    },
+                  },
+                },
+                additionalProperties: false,
+              },
+            },
+            additionalProperties: false,
+          },
+          example: {
+            query: { searchType: '1', searchText: '', payStatusList: [10] },
+            buttonSelections: { belongerIdList: [{ label: '' }] },
+          },
+        },
+        {
+          name: 'set_order_list_query',
+          description: '回填订单列表的搜索条件',
+          schema: {
+            type: 'object',
+            properties: { searchText: { type: 'string', default: '' } },
+            required: ['searchText'],
+            additionalProperties: false,
+          },
+          example: { searchText: '' },
+        },
+        {
+          name: 'select_order_filter_options',
+          description: '打开筛选弹层，选择并确认筛选选项',
+          schema: {
+            type: 'object',
+            properties: { labels: { type: 'array', items: { type: 'string' }, minItems: 1 } },
+            required: ['labels'],
+            additionalProperties: false,
+          },
+          example: { labels: ['待付款'] },
+        },
+      ];
+      const state = {
+        settingsTab: 'models',
+        model: 'OpenAI compatible · Demo',
+        modelName: '',
+        baseUrl: 'https://api.example.com/v1',
+        protocol: 'OpenAI compatible',
+        configured: false,
+        keyDraft: '',
+        modelDraft: '',
+        chatDraft: '',
+        messages: [],
+        chatPending: false,
+        chatTool: null,
+        view: 'home',
+        selected: 0,
+        tab: 'params',
+        drafts: {},
+        validation: {},
+        calls: [],
+        active: null,
+        loggedIn: false,
+        connection: 'off',
+        device: '我的 Chrome · MacBook',
+        deviceDraft: '我的 Chrome · MacBook',
+        shared: false,
+        allowed: new Set(),
+        discovery: 'ready',
+        pageId: 'page_local_1',
+        catalogVersion: 1,
+        filter: '全部',
+        recordId: null,
+      };
+      const view = document.querySelector('#view');
+      let toastTimer,
+        callSequence = 0;
+      const badge = (text, tone = '') =>
+        `<span class="badge ${tone}"><span class="dot"></span>${esc(text)}</span>`;
+      const back = (action = 'home', label = '返回工具') =>
+        `<button class="back" data-action="${action}">${icon('back')}${label}</button>`;
+      const toggle = (on, action, label, disabled = false) =>
+        `<button class="switch ${on ? 'on' : ''}" role="switch" aria-checked="${on}" aria-label="${label}" data-action="${action}" ${disabled ? 'disabled' : ''}><span></span></button>`;
+      function notify(message) {
+        const el = document.querySelector('#toast');
+        el.textContent = message;
+        el.hidden = false;
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => (el.hidden = true), 3500);
+      }
+      function hydrateIcons() {
+        document
+          .querySelectorAll('[data-icon]')
+          .forEach((el) => (el.innerHTML = icon(el.dataset.icon)));
+      }
+      function go(next) {
+        state.view = next;
+        render();
+        document.querySelector('#main').scrollTop = 0;
+        const focus = view.querySelector('h2,.page-label');
+        if (focus) {
+          focus.tabIndex = -1;
+          focus.focus({ preventScroll: true });
+        }
+      }
+      function connectionLabel() {
+        return state.connection === 'on'
+          ? '已连接'
+          : state.connection === 'disconnected'
+            ? '连接已断开'
+            : '未连接';
+      }
+      function discoveryEmpty() {
+        const map = {
+          unsupported: [
+            '浏览器暂不支持 WebMCP',
+            '需要同时具备工具发现与执行能力，请使用经验证的浏览器环境。',
+            '查看兼容说明',
+            'compat',
+          ],
+          permission: [
+            '需要页面访问权限',
+            '允许访问当前站点后，插件才能读取页面注册的工具。',
+            '允许访问当前站点',
+            'permission',
+          ],
+          empty: [
+            '页面尚未注册工具',
+            '请在业务页面注册 WebMCP 工具后重新发现。',
+            '重新发现',
+            'rediscover',
+          ],
+        };
+        const [title, desc, label, action] = map[state.discovery] || map.empty;
+        return `<div class="empty">${icon(state.discovery === 'permission' ? 'lock' : 'alert')}<h3>${title}</h3><p>${desc}</p><button class="btn" data-action="${action}">${label}</button></div>`;
+      }
+      function home() {
+        return `<div class="page-label">当前页面 / CURRENT PAGE</div><section class="page-card"><div class="page-card-main"><span class="site">${icon('globe')}</span><div><h2 class="page-title">订单管理</h2><p class="domain">provider.example.com/orders</p></div><button class="icon-btn" data-action="rediscover" aria-label="重新发现工具" title="重新发现工具">${icon('refresh')}</button></div><div class="page-card-foot">${badge(state.discovery === 'ready' ? 'WebMCP 可用' : '需要检查', state.discovery === 'ready' ? 'green' : 'amber')}<span>${state.shared ? '已共享 ' + state.allowed.size + ' 个工具' : '仅本地访问'}</span></div></section><div class="section-head"><h2>页面工具 <span class="count">${state.discovery === 'ready' ? tools.length : 0}</span></h2><span>选择工具开始调用</span></div>${state.discovery === 'ready' ? `<div class="tool-list">${tools.map((t, i) => `<button class="tool" data-action="tool" data-index="${i}"><div class="tool-top"><span class="tool-symbol">${icon(i === 0 ? 'terminal' : 'code')}</span><code>${t.name}</code>${icon('chevron', 'chevron')}</div><p>${t.description}</p><div class="tool-meta"><span>${icon(state.shared && state.allowed.has(t.name) ? 'shield' : 'lock')}${state.shared && state.allowed.has(t.name) ? '已允许远程调用' : '未授权远程调用'}</span><span class="schema-tag">JSON Schema</span></div></button>`).join('')}</div>` : discoveryEmpty()}<button class="share-entry" data-action="sharing">${icon('shield')}<span><strong>页面共享与授权</strong><p>选择 Agent 可以访问的工具。<br>你始终拥有控制权。</p></span>${icon('chevron', 'chevron')}</button><div class="bottom-note">${icon('code')}页面提供能力，WebMCP 负责连接</div>`;
+      }
+      function validationHtml() {
+        const v = state.validation[state.selected];
+        return v
+          ? `<div id="validation" class="${v.ok ? 'valid' : 'error'}" role="status">${esc(v.text)}</div>`
+          : '<div id="validation" role="status"></div>';
+      }
+      function statusTone(call) {
+        return call.status === '执行中'
+          ? 'blue'
+          : call.status === '结果未知'
+            ? 'amber'
+            : call.status === '执行失败' || call.status === '结果超限' || call.result?.isError
+              ? 'red'
+              : 'green';
+      }
+      function resultBlock(call) {
+        return `<section class="result"><div class="result-head"><h3>调用结果</h3>${badge(call.status, statusTone(call))}</div><div class="result-meta"><span>${esc(call.source)}调用</span><span>${call.duration === null ? '等待返回' : call.duration + ' ms'}</span><span class="mono">${esc(call.id)}</span></div>${call.status === '执行中' ? '<div class="notice">正在等待页面返回。切换工具不会中断当前调用。</div>' : call.status === '结果未知' ? '<div class="notice amber">未取得返回，业务可能已执行。请核实页面状态，勿直接重试。</div>' : call.result !== undefined ? `${call.result?.isError ? '<div class="error">页面已返回业务错误，请查看原始结果。</div>' : ''}<pre class="code-block" style="margin-top:10px">${esc(pretty(call.result))}</pre><p class="hint">已返回不等于业务完成，以原始业务结果为准。</p>` : '<div class="notice amber">' + esc(call.message || '没有可展示的业务结果。') + '</div>'}</section>`;
+      }
+      function detail() {
+        const t = tools[state.selected],
+          draft = state.drafts[state.selected] ?? '{}',
+          latest = state.calls.find((c) => c.tool === t.name && c.pageId === state.pageId);
+        return `${back()}<div class="detail-title"><span class="tool-symbol">${icon('terminal')}</span><div><h2>${t.name}</h2><p>${t.description}</p></div></div><div class="tabs" role="tablist" aria-label="工具信息"><button role="tab" aria-selected="${state.tab === 'params'}" class="${state.tab === 'params' ? 'active' : ''}" data-action="params">${icon('code')}参数</button><button role="tab" aria-selected="${state.tab === 'schema'}" class="${state.tab === 'schema' ? 'active' : ''}" data-action="schema">${icon('file')}Schema</button></div>${state.tab === 'params' ? `<div class="editor-box"><div class="editor-toolbar"><span class="mono">JSON</span><button class="text-btn" data-action="example">填入默认示例</button></div><textarea class="editor mono" id="json" aria-label="JSON 参数" spellcheck="false">${esc(draft)}</textarea></div>${validationHtml()}<div class="actions"><button class="btn" data-action="validate">${icon('check')}校验</button><button class="btn primary" data-action="run" ${state.active || state.discovery !== 'ready' ? 'disabled' : ''}>${icon(state.active ? 'refresh' : 'play', state.active ? 'spin' : '')}${state.active ? '页面正在执行' : '执行工具'}</button></div><p class="hint">示例契约 · 仅检查示例 Schema 支持的规则。<br>参数不会自动补齐，执行结果为本地模拟数据。</p>` : `<pre class="code-block" style="margin-top:16px">${esc(pretty(t.schema))}</pre><p class="hint">示例参数契约，实际工具 Schema 由业务页面提供。</p>`}${latest ? resultBlock(latest) : '<div class="result"><div class="result-head"><h3>调用结果</h3></div><div class="empty compact">' + icon('terminal') + '<p>还没有调用结果<br>填写参数后，执行这个工具。</p></div></div>'}`;
+      }
+      function sharing() {
+        return `${back()}<h2>页面共享与授权</h2><p class="view-description">只开放你选择的工具，新增工具默认不授权。</p><div class="setting-card"><div class="setting-row"><div><strong>共享当前页面</strong><p>订单管理 · provider.example.com</p></div>${toggle(state.shared, 'share', '共享当前页面', state.connection !== 'on')}</div></div>${state.connection !== 'on' ? '<div class="notice">请先连接当前浏览器，再开启页面共享。<button class="text-btn" data-action="settings">前往连接设置 →</button></div>' : ''}<div class="section-head"><h2>允许调用的工具</h2><span>${state.allowed.size} / ${tools.length} 已选择</span></div><div>${tools.map((t) => `<label class="check-row"><input type="checkbox" data-tool="${t.name}" ${state.allowed.has(t.name) ? 'checked' : ''} ${!state.shared || state.connection !== 'on' ? 'disabled' : ''}><span><code>${t.name}</code><small>${t.description}</small></span></label>`).join('')}</div><div class="notice">授权仅适用于当前文档，刷新后需要重新授权。远程 Agent 使用独立令牌连接桥接服务。</div><p class="hint">关闭共享或撤销工具授权会立即阻止新调用，已发出的调用可能仍会完成，不代表业务已取消。</p>`;
+      }
+      function history() {
+        const calls = state.calls.filter(
+          (c) => state.filter === '全部' || c.source === state.filter,
+        );
+        return `${back()}<h2>会话记录 <span class="count">${state.calls.length}</span></h2><p class="view-description">查看本次会话中的手动、AIChat 与 Agent 调用。</p><div class="filter" aria-label="按来源筛选">${['全部', '手动', 'AIChat', 'Agent'].map((f) => `<button data-action="filter" data-filter="${f}" class="${state.filter === f ? 'active' : ''}" aria-pressed="${state.filter === f}">${f}</button>`).join('')}</div>${calls.length ? calls.map((c) => `<button class="history-row" data-action="record" data-id="${c.id}"><code>${esc(c.tool)}</code><span class="history-meta"><span>${c.time}</span><span>${c.source}</span><span>${c.duration === null ? '—' : c.duration + ' ms'}</span>${badge(c.result?.isError ? '业务错误' : c.status, statusTone(c))}</span></button>`).join('') : `<div class="empty">${icon('history')}<h3>暂无${state.filter === '全部' ? '' : state.filter}调用记录</h3><p>${state.filter === 'Agent' ? '真实 Agent 连接未接入此离线原型。' : '从工具列表选择工具，开始第一次调用。'}</p><button class="btn" data-action="home">查看工具</button></div>`}<p class="hint">完整参数与结果只在当前会话保留，刷新此原型后清空。</p>`;
+      }
+      function record() {
+        const c = state.calls.find((c) => c.id === state.recordId);
+        if (!c) return back('history', '返回会话记录') + '<h2>记录不存在</h2>';
+        return `${back('history', '返回会话记录')}<h2>调用详情</h2><dl class="detail-grid"><dt>工具名称</dt><dd class="mono">${esc(c.tool)}</dd><dt>调用来源</dt><dd>${c.source} · ${c.time}</dd><dt>页面实例</dt><dd class="mono">${esc(c.pageId)}</dd><dt>调用标识</dt><dd class="mono">${esc(c.id)}</dd></dl><h3>调用参数</h3><pre class="code-block" style="margin-top:12px">${esc(pretty(c.args))}</pre>${resultBlock(c)}`;
+      }
+      function render() {
+        const renderers = {
+          home,
+          detail,
+          settings,
+          aichat,
+          help,
+          sharing,
+          history,
+          record,
+          compat: () =>
+            `${back()}<h2>浏览器兼容说明</h2><div class="notice">正式插件需要浏览器同时提供受支持的 WebMCP 工具发现与执行接口。最低版本及实验开关需在兼容性验证阶段确定。</div><p class="view-description">此离线原型不检测真实浏览器能力。</p>`,
+        };
+        view.innerHTML = (renderers[state.view] || home)();
+        renderNavigation();
+        renderFooter();
+        hydrateIcons();
+      }
+      function validateValue(value, schema, path = '$', errors = []) {
+        const type = schema.type;
+        const matches =
+          type === 'object'
+            ? value !== null && typeof value === 'object' && !Array.isArray(value)
+            : type === 'array'
+              ? Array.isArray(value)
+              : type === 'integer'
+                ? Number.isInteger(value)
+                : type === 'number'
+                  ? typeof value === 'number' && Number.isFinite(value)
+                  : type === 'null'
+                    ? value === null
+                    : typeof value === type;
+        if (type && !matches) {
+          errors.push(`${path}：应为 ${type}`);
+          return errors;
+        }
+        if (type === 'object') {
+          for (const key of schema.required || [])
+            if (!Object.hasOwn(value, key)) errors.push(`${path}.${key}：必填字段`);
+          for (const key of Object.keys(value)) {
+            if (Object.hasOwn(schema.properties || {}, key))
+              validateValue(value[key], schema.properties[key], `${path}.${key}`, errors);
+            else if (schema.additionalProperties === false)
+              errors.push(`${path}.${key}：不允许的字段`);
+          }
+        }
+        if (type === 'array') {
+          if (schema.minItems !== undefined && value.length < schema.minItems)
+            errors.push(`${path}：至少需要 ${schema.minItems} 个元素`);
+          value.forEach((item, i) =>
+            validateValue(item, schema.items || {}, `${path}[${i}]`, errors),
+          );
+        }
+        return errors;
+      }
+      function validateDraft() {
+        let value;
+        try {
+          value = JSON.parse(state.drafts[state.selected] ?? '{}');
+        } catch {
+          state.validation[state.selected] = {
+            ok: false,
+            text: 'JSON 格式无效，请检查引号、逗号和括号。',
+          };
+          return { ok: false };
+        }
+        const errors = validateValue(value, tools[state.selected].schema);
+        if (new TextEncoder().encode(pretty(value)).length > 256 * 1024)
+          errors.push('参数超过 256 KiB，请减少输入内容。');
+        state.validation[state.selected] = {
+          ok: !errors.length,
+          text: errors.length ? errors.join('；') : '校验通过，可以执行。',
+        };
+        return { ok: !errors.length, value };
+      }
+      function updateValidation() {
+        const el = document.querySelector('#validation'),
+          v = state.validation[state.selected];
+        if (el) {
+          el.className = v ? (v.ok ? 'valid' : 'error') : '';
+          el.textContent = v?.text || '';
+        }
+      }
+      function completeCall(id, status, result, message) {
+        const c = state.calls.find((c) => c.id === id);
+        if (!c || c.status !== '执行中') return;
+        clearTimeout(c.timer);
+        clearTimeout(c.deadline);
+        c.status = status;
+        c.duration = Math.round(performance.now() - c.started);
+        c.result = result;
+        c.message = message;
+        if (state.active === id) state.active = null;
+        if (['detail', 'history', 'record'].includes(state.view)) {
+          if (state.view === 'detail') {
+            const area = document.querySelector('#json');
+            const selection =
+              area && document.activeElement === area
+                ? [area.selectionStart, area.selectionEnd]
+                : null;
+            render();
+            if (selection) {
+              const updated = document.querySelector('#json');
+              updated?.focus();
+              updated?.setSelectionRange(...selection);
+            }
+          } else render();
+        }
+        document.querySelector('#announcer').textContent =
+          status === '结果未知' ? '等待结束，执行结果未知' : '调用已返回';
+        notify(
+          status === '已返回'
+            ? '页面已返回，查看原始业务结果'
+            : message || '未取得返回，执行结果未知',
+        );
+      }
+      function run() {
+        if (state.active) return notify('页面繁忙，不会加入队列。');
+        if (state.discovery !== 'ready') return notify('当前页面不可调用，请检查页面状态。');
+        const validation = validateDraft();
+        updateValidation();
+        if (!validation.ok) return;
+        const t = tools[state.selected],
+          c = {
+            id: 'call_' + String(++callSequence).padStart(4, '0'),
+            pageId: state.pageId,
+            tool: t.name,
+            source: '手动',
+            args: validation.value,
+            time: new Date().toLocaleTimeString('zh-CN', { hour12: false }),
+            status: '执行中',
+            duration: null,
+            started: performance.now(),
+          };
+        state.calls.unshift(c);
+        state.active = c.id;
+        c.deadline = setTimeout(
+          () => completeCall(c.id, '结果未知', undefined, '等待超时，业务可能已执行。'),
+          60000,
+        );
+        c.timer = setTimeout(() => {
+          const result =
+            t.name === 'query_orders'
+              ? {
+                  isError: false,
+                  status: 'completed',
+                  records: [{ orderNo: 'ORD-20260917-0086', name: '示例订单', payStatus: 10 }],
+                  total: 1,
+                  prototype: true,
+                }
+              : t.name === 'set_order_list_query'
+                ? { isError: false, status: 'submitted', query: c.args, prototype: true }
+                : { isError: false, status: 'submitted', selected: c.args.labels, prototype: true };
+          completeCall(c.id, '已返回', result);
+        }, 1100);
+        render();
+      }
+      async function copyEndpoint() {
+        const value = 'https://mcp.example.com/mcp';
+        try {
+          if (!navigator.clipboard?.writeText) throw Error();
+          await navigator.clipboard.writeText(value);
+          notify('MCP 示例地址已复制。');
+        } catch {
+          const range = document.createRange();
+          range.selectNodeContents(document.querySelector('#endpoint'));
+          const selection = getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+          notify('地址已选中，请按 Ctrl+C 或 ⌘C 复制。');
+        }
+      }
+      const actions = {
+        aichat: () => go('aichat'),
+        help: () => go('help'),
+        mainTab: (el) => go(el.dataset.page),
+        settingsSection: (el) => {
+          state.settingsTab = el.dataset.section;
+          render();
+        },
+        suggest: (el) => {
+          state.chatDraft = el.dataset.prompt;
+          render();
+          document.querySelector('#chat-input')?.focus();
+        },
+        sendChat,
+        approveChat,
+        rejectChat: () => {
+          state.chatTool = null;
+          state.messages.push({
+            role: 'assistant',
+            text: '已取消这次工具调用，没有执行页面操作。',
+          });
+          render();
+        },
+        newChat: () => {
+          clearTimeout(chatTimer);
+          state.messages = [];
+          state.chatTool = null;
+          state.chatPending = false;
+          state.chatDraft = '';
+          render();
+        },
+        stopChat: () => {
+          clearTimeout(chatTimer);
+          state.chatPending = false;
+          state.messages.push({ role: 'assistant', text: '已停止生成。' });
+          render();
+        },
+        saveModel: () => {
+          if (!state.modelDraft.trim() || !state.baseUrl.trim())
+            return notify('请填写模型 ID 和 API 地址。');
+          try {
+            if (new URL(state.baseUrl).protocol !== 'https:') throw Error();
+          } catch {
+            return notify('请输入有效的 HTTPS API 地址。');
+          }
+          state.configured = true;
+          state.model = state.modelDraft.trim();
+          state.keyDraft = '';
+          render();
+          notify('演示配置已保存；API Key 未保存，也不会发送。');
+        },
+        testModel: () => notify('原型演示：配置检查完成，未发送真实 API 请求。'),
+        showKey: () => {
+          const input = document.querySelector('#api-key');
+          input.type = input.type === 'password' ? 'text' : 'password';
+        },
+        bridgeConnect: () => {
+          state.loggedIn = true;
+          state.connection = state.connection === 'on' ? 'off' : 'on';
+          render();
+          notify('已切换模拟桥接状态，不进行网络连接。');
+        },
+        home: () => go('home'),
+        history: () => go('history'),
+        settings: () => go('settings'),
+        sharing: () => go('sharing'),
+        compat: () => go('compat'),
+        tool: (el) => {
+          state.selected = Number(el.dataset.index);
+          state.tab = 'params';
+          go('detail');
+        },
+        params: () => {
+          state.tab = 'params';
+          render();
+        },
+        schema: () => {
+          state.tab = 'schema';
+          render();
+        },
+        example: () => {
+          state.drafts[state.selected] = pretty(tools[state.selected].example);
+          delete state.validation[state.selected];
+          render();
+          document.querySelector('#json')?.focus();
+        },
+        validate: () => {
+          validateDraft();
+          updateValidation();
+        },
+        run,
+        rediscover: () => {
+          render();
+          notify(
+            state.discovery === 'ready'
+              ? '已重新发现 3 个示例工具，授权保持不变。'
+              : '尚未发现可用工具，请检查页面环境。',
+          );
+        },
+        permission: () => {
+          state.discovery = 'ready';
+          render();
+          notify('已模拟授予当前站点权限。');
+        },
+        login: () => {
+          const name = state.deviceDraft.trim();
+          if (!name) return notify('请输入设备名称。');
+          state.device = name;
+          state.deviceDraft = name;
+          state.loggedIn = true;
+          state.connection = 'on';
+          render();
+          notify('模拟连接已开启，页面尚未共享。');
+        },
+        saveDevice: () => {
+          const name = state.deviceDraft.trim();
+          if (!name) return notify('请输入设备名称。');
+          state.device = name;
+          state.deviceDraft = name;
+          notify('设备名称已保存。');
+        },
+        connect: () => {
+          state.connection = state.connection === 'on' ? 'off' : 'on';
+          render();
+          notify(
+            state.connection === 'on'
+              ? '模拟连接已恢复，不会重放业务调用。'
+              : '连接已关闭，Agent 无法发起新调用。',
+          );
+        },
+        logout: () => {
+          state.loggedIn = false;
+          state.connection = 'off';
+          state.shared = false;
+          state.allowed.clear();
+          state.catalogVersion++;
+          render();
+          notify('已退出模拟登录，页面和工具授权已清除。');
+        },
+        share: () => {
+          if (state.connection !== 'on') return;
+          state.shared = !state.shared;
+          if (!state.shared) state.allowed.clear();
+          state.catalogVersion++;
+          render();
+          notify(
+            state.shared
+              ? '页面共享已开启，请选择允许调用的工具。'
+              : '已关闭共享，新远程调用将被阻止。',
+          );
+        },
+        filter: (el) => {
+          state.filter = el.dataset.filter;
+          render();
+        },
+        record: (el) => {
+          state.recordId = el.dataset.id;
+          go('record');
+        },
+        copy: copyEndpoint,
+      };
+      document.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-action]');
+        if (button && !button.disabled) actions[button.dataset.action]?.(button);
+      });
+      document.addEventListener('input', (event) => {
+        const fields = {
+          'chat-input': 'chatDraft',
+          'model-id': 'modelDraft',
+          'base-url': 'baseUrl',
+          'api-key': 'keyDraft',
+        };
+        if (fields[event.target.id]) state[fields[event.target.id]] = event.target.value;
+        if (event.target.id === 'json') {
+          state.drafts[state.selected] = event.target.value;
+          delete state.validation[state.selected];
+          updateValidation();
+        }
+        if (event.target.id === 'device') state.deviceDraft = event.target.value;
+      });
+      document.addEventListener('change', (event) => {
+        if (event.target.id === 'protocol') state.protocol = event.target.value;
+        const name = event.target.dataset.tool;
+        if (name && state.shared && state.connection === 'on') {
+          event.target.checked ? state.allowed.add(name) : state.allowed.delete(name);
+          state.catalogVersion++;
+          const focusName = name;
+          render();
+          Array.from(document.querySelectorAll('[data-tool]'))
+            .find((el) => el.dataset.tool === focusName)
+            ?.focus();
+        }
+      });
+
+      const mainTabs = [
+        ['home', 'Tools', 'terminal'],
+        ['aichat', 'AIChat', 'chat'],
+        ['settings', 'Settings', 'settings'],
+        ['help', 'Help', 'help'],
+      ];
+      icons.chat =
+        '<path d="M21 11a8 8 0 0 1-8 8H7l-5 3V5a3 3 0 0 1 3-3h11a5 5 0 0 1 5 5v4Z"/><path d="M7 8h9M7 12h6"/>';
+      icons.help =
+        '<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4 2c-1 .7-1.5 1-1.5 2.5M12 17h.01"/>';
+      function renderNavigation() {
+        const active = ['aichat', 'settings', 'help'].includes(state.view)
+          ? state.view
+          : state.view === 'compat'
+            ? 'help'
+            : 'home';
+        document.querySelector('#primary-tabs').innerHTML = mainTabs
+          .map(
+            ([page, label, symbol]) =>
+              `<button id="tab-${page}" role="tab" aria-controls="view" aria-selected="${active === page}" tabindex="${active === page ? 0 : -1}" data-action="mainTab" data-page="${page}">${icon(symbol)}${label}</button>`,
+          )
+          .join('');
+        view.setAttribute('aria-labelledby', 'tab-' + active);
+      }
+      function renderFooter() {
+        document.querySelector('#footer').innerHTML =
+          `<div class="status-strip"><span>${icon('shield')}离线交互原型 · 数据仅用于演示</span><button data-action="help">使用帮助 ${icon('chevron')}</button></div>`;
+      }
+      function settings() {
+        return `<div class="workspace-heading"><div><div class="eyebrow">PREFERENCES</div><h2>设置</h2><p>连接你的模型与浏览器工具。</p></div>${icon('settings')}</div><div class="settings-switcher" aria-label="设置分类"><button data-action="settingsSection" data-section="models" class="${state.settingsTab === 'models' ? 'active' : ''}" aria-pressed="${state.settingsTab === 'models'}">模型配置</button><button data-action="settingsSection" data-section="bridge" class="${state.settingsTab === 'bridge' ? 'active' : ''}" aria-pressed="${state.settingsTab === 'bridge'}">远程桥接</button></div>${state.settingsTab === 'models' ? `<div class="profile-summary"><span class="tool-symbol">${icon('chat')}</span><div><strong>${state.configured ? esc(state.model) : '添加你的第一个模型'}</strong><p>${state.configured ? '当前会话的演示配置' : '支持自定义 API 地址与模型'}</p></div>${badge(state.configured ? '已配置' : '待配置', state.configured ? 'green' : '')}</div><label class="field" for="protocol">接口协议</label><select class="input" id="protocol">${['OpenAI compatible', 'Anthropic Messages', 'Gemini'].map((n) => `<option ${state.protocol === n ? 'selected' : ''}>${n}</option>`).join('')}</select><label class="field" for="base-url">API 地址</label><input class="input mono" id="base-url" type="url" value="${esc(state.baseUrl)}" placeholder="https://api.example.com/v1"><label class="field" for="model-id">模型 ID</label><input class="input" id="model-id" value="${esc(state.modelDraft)}" placeholder="输入服务商提供的模型 ID"><label class="field" for="api-key">API Key <span style="color:var(--muted);font-weight:400">· 仅展示输入交互</span></label><div class="key-input"><input class="input mono" id="api-key" type="password" value="${esc(state.keyDraft)}" autocomplete="off" placeholder="请勿在原型中填写真实密钥"><button class="icon-btn" data-action="showKey" aria-label="显示或隐藏 API Key">${icon('lock')}</button></div><p class="hint">原型不会保存或发送 API Key，保存配置后清空输入。</p><div class="actions"><button class="btn" data-action="testModel">测试配置（模拟）</button><button class="btn primary" data-action="saveModel">保存配置</button></div><div class="notice">配置后可在 AIChat 中体验交互。此原型不连接真实模型，正式功能将使用你选择的模型服务。</div>` : `<div class="profile-summary"><span class="tool-symbol">${icon('monitor')}</span><div><strong>当前浏览器</strong><p>${esc(state.device)}</p></div>${badge(connectionLabel(), state.connection === 'on' ? 'green' : '')}</div><label class="field" for="device">浏览器名称</label><input class="input" id="device" value="${esc(state.deviceDraft)}"><label class="field" for="bridge-url">桥接服务地址</label><input class="input mono" id="bridge-url" value="http://127.0.0.1:38472" readonly><label class="field" for="bridge-token">插件令牌</label><input class="input" id="bridge-token" value="demo-plugin-token" type="password" readonly><p class="hint">示例配置 · 使用独立插件令牌，无需账号登录。</p><div class="actions"><button class="btn" data-action="saveDevice">保存名称</button><button class="btn primary" data-action="bridgeConnect">${state.connection === 'on' ? '断开模拟连接' : '模拟连接'}</button></div><button class="share-entry" data-action="sharing">${icon('shield')}<span><strong>管理页面共享</strong><p>选择外部 Agent 可以调用的工具</p></span>${icon('chevron', 'chevron')}</button><div class="notice">内置 AIChat 无需桥接服务。桥接仅用于外部 MCP 客户端，连接过程在此原型中为模拟。</div>`}`;
+      }
+      function aichat() {
+        return `<div class="workspace-heading"><div><div class="eyebrow">PAGE ASSISTANT</div><h2>与页面对话</h2></div><button class="icon-btn" data-action="newChat" aria-label="新建对话" title="新建对话">${icon('refresh')}</button></div><div class="chat-context">${icon('globe')}订单管理<small>3 个可用工具 · 演示</small></div>${state.messages.length ? `<div class="chat-thread">${state.messages.map((m) => `<div class="message ${m.role}">${m.role === 'assistant' ? '<div class="message-label">WebMCP AI · 模拟回复</div>' : ''}${esc(m.text)}</div>`).join('')}${state.chatPending ? '<p class="hint" role="status">正在生成演示回复…</p>' : ''}</div>` : `<div class="chat-welcome"><div class="chat-emblem">${icon('chat')}</div><h3>说出目标，<br>让工具接着做。</h3><p>查询页面数据、设置筛选条件，<br>从一句话开始，执行过程始终可见。</p></div><div class="suggestions">${['查询当前页面的待付款订单', '帮我了解这 3 个工具能做什么'].map((q) => `<button class="suggestion" data-action="suggest" data-prompt="${q}">${q}${icon('arrow')}</button>`).join('')}</div>`}${state.chatTool ? `<div class="call-trace" style="margin-top:16px"><div class="trace-head"><code>query_orders</code>${badge('等待确认', 'amber')}</div><p>将在订单管理页面查询待付款订单。</p><pre>{ "query": { "payStatusList": [10] } }</pre><div class="actions"><button class="btn" data-action="rejectChat">取消</button><button class="btn primary" data-action="approveChat">允许执行（模拟）</button></div></div>` : ''}<div class="composer"><textarea id="chat-input" aria-label="对话内容" placeholder="你想在这个页面上做什么？" ${state.chatPending || state.chatTool ? 'disabled' : ''}>${esc(state.chatDraft)}</textarea><div class="composer-bottom"><button class="model-select" data-action="settings" title="前往模型设置">${icon('chat')} ${esc(state.model)} ▾</button><button class="send" data-action="${state.chatPending ? 'stopChat' : 'sendChat'}" aria-label="${state.chatPending ? '停止生成' : '发送消息'}" ${state.chatTool ? 'disabled' : ''}>${icon(state.chatPending ? 'refresh' : 'arrow')}</button></div></div><p class="chat-notice">工具执行前需要确认 · 当前为离线演示</p>`;
+      }
+      let chatTimer;
+      function sendChat() {
+        if (state.chatPending || state.chatTool) return;
+        const text = state.chatDraft.trim();
+        if (!text) return notify('先输入你想完成的任务。');
+        state.messages.push({ role: 'user', text });
+        state.chatDraft = '';
+        state.chatPending = true;
+        render();
+        chatTimer = setTimeout(() => {
+          state.chatPending = false;
+          if (/订单|查询|待付款/.test(text)) {
+            state.messages.push({
+              role: 'assistant',
+              text: '我可以使用 query_orders 查询待付款订单。请确认下面的调用参数。',
+            });
+            state.chatTool = true;
+          } else
+            state.messages.push({
+              role: 'assistant',
+              text: '当前页面提供 3 个工具：\n• query_orders：查询订单数据\n• set_order_list_query：填写搜索条件\n• select_order_filter_options：选择筛选项\n\n这是离线演示回复。试试「查询待付款订单」，体验工具调用确认流程。',
+            });
+          if (state.view === 'aichat') {
+            render();
+            document.querySelector('#main').scrollTop = 99999;
+          }
+        }, 650);
+      }
+      function approveChat() {
+        if (state.active) return notify('页面还有其他调用，请等待完成。');
+        state.chatTool = null;
+        const id = 'call_' + String(++callSequence).padStart(4, '0');
+        state.calls.unshift({
+          id,
+          pageId: state.pageId,
+          tool: 'query_orders',
+          source: 'AIChat',
+          args: { query: { payStatusList: [10] } },
+          time: new Date().toLocaleTimeString('zh-CN', { hour12: false }),
+          status: '已返回',
+          duration: 128,
+          result: {
+            records: [{ orderNo: 'ORD-20260917-0086', payStatus: 10 }],
+            total: 1,
+            prototype: true,
+          },
+        });
+        state.messages.push({
+          role: 'assistant',
+          text: '✓ query_orders 已返回 · 128 ms\n\n找到 1 笔待付款订单：\nORD-20260917-0086\n\n以上为模拟数据。完整参数与结果可在右上角「会话记录」查看。',
+        });
+        render();
+        document.querySelector('#main').scrollTop = 99999;
+      }
+      function help() {
+        return `<div class="workspace-heading"><div><div class="eyebrow">GET STARTED</div><h2>帮助与指南</h2><p>从发现工具，到完成一次操作。</p></div>${icon('help')}</div><div class="help-intro">${badge('WebMCP 工具助手', 'blue')}<h3>你的页面，自带工具箱。</h3><p>手动执行页面工具，或让 AI 帮你完成任务。你可以查看参数，并决定是否执行。</p></div><div class="section-head"><h2>开始使用</h2><span>三个步骤</span></div>${[
+          ['允许访问页面', '在 Tools 中授权当前站点，发现页面注册的工具。'],
+          ['选择你的使用方式', '手动填写参数，或在 Settings 中配置模型后打开 AIChat。'],
+          ['确认执行，查看结果', '检查工具和参数，执行后在会话记录中查看完整返回。'],
+        ]
+          .map(
+            ([title, desc], i) =>
+              `<div class="help-step"><span class="step-number">${i + 1}</span><div><strong>${title}</strong><p>${desc}</p></div></div>`,
+          )
+          .join('')}<div class="section-head"><h2>常见问题</h2></div>${[
+          [
+            '为什么页面没有工具？',
+            '只有注册了受支持 WebMCP 工具的页面才会显示工具。请检查站点授权、页面注册情况和浏览器能力。',
+          ],
+          [
+            'AIChat 需要运行桥接服务吗？',
+            '不需要。内置 AIChat 的设计是直接连接模型，桥接用于让外部 MCP 客户端访问已共享的页面工具。',
+          ],
+          [
+            'API Key 和对话会保存在哪里？',
+            '此离线原型不保存 API Key，也不发送网络请求；所有演示配置、聊天与记录在刷新后清空。正式功能的存储策略见开发文档。',
+          ],
+          [
+            '结果未知时，可以再执行一次吗？',
+            '不要直接重试。页面操作可能已经生效，应先检查业务状态，避免重复提交。',
+          ],
+        ]
+          .map(([q, a]) => `<details class="faq"><summary>${q}</summary><p>${a}</p></details>`)
+          .join(
+            '',
+          )}<button class="btn full" style="margin-top:22px" data-action="home">${icon('terminal')}前往 Tools</button><p class="chat-notice">WebMCP · 交互设计原型 / v0.2</p>`;
+      }
+      document.addEventListener('keydown', (event) => {
+        if (
+          event.target.closest('#primary-tabs') &&
+          ['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)
+        ) {
+          event.preventDefault();
+          let i = mainTabs.findIndex((t) => t[0] === event.target.dataset.page);
+          i =
+            event.key === 'Home'
+              ? 0
+              : event.key === 'End'
+                ? 3
+                : (i + (event.key === 'ArrowRight' ? 1 : 3)) % 4;
+          go(mainTabs[i][0]);
+          document.querySelector('#tab-' + mainTabs[i][0]).focus();
+        }
+        if (
+          event.target.id === 'chat-input' &&
+          event.key === 'Enter' &&
+          !event.shiftKey &&
+          !event.isComposing
+        ) {
+          event.preventDefault();
+          sendChat();
+        }
+      });
+
+      render();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "browser": "151.0.7922.34",
+  "date": "2026-09-18T02:39:42.068Z",
+  "nativeWebMCP": true,
+  "permission": "fixture origin pregranted in temporary test copy",
+  "passed": [
+    "discovery",
+    "validation",
+    "execution",
+    "business-error",
+    "result-isolation",
+    "draft-isolation",
+    "panel-reload",
+    "settings",
+    "sharing-default-all",
+    "widths-360-420-1000",
+    "worker-restart",
+    "spa-invalidation",
+    "long-results",
+    "keyboard-focus",
+    "navigation-unknown",
+    "validation-budget",
+    "real-timeout-lock",
+    "late-result"
+  ],
+  "errors": []
+}

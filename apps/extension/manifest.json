@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "WebMCP 工具助手",
+  "version": "0.2.2",
+  "description": "发现页面 WebMCP 工具，手动调用、AIChat 对话执行，并授权外部 Agent 远程访问。",
+  "minimum_chrome_version": "116",
+  "permissions": [
+    "sidePanel",
+    "activeTab",
+    "tabs",
+    "scripting",
+    "storage",
+    "webNavigation",
+    "alarms",
+    "offscreen"
+  ],
+  "optional_host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "打开 WebMCP 工具"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'; worker-src 'self'; connect-src https: wss: http://127.0.0.1:* http://localhost:* ws://127.0.0.1:* ws://localhost:*"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "name": "webmcp-extension",
+  "version": "0.2.2",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "check": "vue-tsc --noEmit",
+    "test": "vitest run",
+    "test:ui": "vitest run tests/ui.test.ts",
+    "build": "node scripts/build.mjs",
+    "dev:extension": "node scripts/build.mjs --watch",
+    "package:extension": "npm run build && node scripts/package.mjs",
+    "test:extension": "node scripts/check-package.mjs",
+    "fixture": "node scripts/fixture.mjs",
+    "test:browser": "node scripts/browser-test.mjs",
+    "format": "prettier --write apps packages scripts tests",
+    "test:remote-browser": "npm run test:bridge-browser",
+    "test:bridge-browser": "node scripts/remote-browser-test.mjs",
+    "sync:bridge-protocol": "node scripts/sync-bridge-protocol.mjs",
+    "check:bridge-protocol": "node scripts/sync-bridge-protocol.mjs --check",
+    "test:chat-browser": "node scripts/chat-browser-test.mjs"
+  },
+  "dependencies": {
+    "jsonschema": "1.5.0",
+    "markdown-it": "15.0.2",
+    "vue": "3.5.42",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "2.0.0",
+    "@types/chrome": "0.3.0",
+    "@types/node": "24.13.5",
+    "@vitejs/plugin-vue": "6.0.9",
+    "@vue/test-utils": "2.5.1",
+    "esbuild": "0.28.2",
+    "jsdom": "30.1.0",
+    "playwright": "1.63.0",
+    "prettier": "3.9.7",
+    "typescript": "5.9.3",
+    "vite": "8.3.0",
+    "vitest": "5.0.1",
+    "vue-tsc": "3.3.11"
+  }
+}
